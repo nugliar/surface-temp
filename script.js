@@ -17,19 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
       right: 20
     }
     const paddingY = {
-      top: 60,
-      bottom: 20
+      top: 20,
+      bottom: 100
     }
 
-    const rangeYear = d3.extent(data, d => parseInt(d.year))
+    const parseYear = d3.timeParse('%Y')
+    const rangeYear = d3.extent(data, d => d.year)
 
-    const xScale = d3.scaleLinear()
-      .domain(rangeYear)
+    const xScale = d3.scaleTime()
+      .domain(rangeYear.map(d => parseYear(d)))
       .range([paddingX.left, w - paddingX.right])
 
+    const uniqueMonthValues = new Set(data.map(d => d.month))
+    const yDomain = Array.from(uniqueMonthValues)
+    yDomain.reverse()
+
     const yScale = d3.scaleBand()
-      .domain(data.map(d => d.month))
-      .range([h - paddingY.top, paddingY.bottom])
+      .domain(yDomain)
+      .range([h - paddingY.bottom, paddingY.top])
 
     const rectWidth = (w - paddingX.left - paddingX.right) / (rangeYear[1] - rangeYear[0])
     const rectHeight = (h - paddingY.top - paddingY.bottom) / 12
@@ -62,22 +67,25 @@ document.addEventListener('DOMContentLoaded', () => {
       .data(data)
       .enter()
       .append('rect')
-        .attr('x', d => xScale(parseInt(d.year)))
+        .attr('x', d => xScale(parseYear(d.year)))
         .attr('y', d => yScale(d.month))
         .attr('width', rectWidth)
         .attr('height', rectHeight)
         .attr('fill', d => colorInter(tempScale(d.variance)))
 
-    const xAxis = d3.axisBottom()
-    const yAxis = d3.axisLeft()
+    const xAxis = d3.axisBottom(xScale)
+      .ticks(d3.timeYear.every(10))
+
+    const yAxis = d3.axisLeft(yScale)
+      .tickFormat(t => d3.timeFormat('%B')(new Date(t + '-1-2000')))
 
     svg.append('g')
       .attr('transform', 'translate(0, ' + (h - paddingY.bottom) + ')')
-      .call(xScale)
+      .call(xAxis)
 
     svg.append('g')
       .attr('transform', 'translate(' + paddingX.left + ', 0)')
-      .call(yScale)
+      .call(yAxis)
 
   }
   request.open('GET', url, true)
