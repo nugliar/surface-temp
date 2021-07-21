@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: arial;
+}
+
+h1, h2, h3 {
+  margin: auto;
+  text-align: center;
+  font-weight: 200;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+}
+
+.outer-container {
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 2em;
+  box-shadow: 0px 0px 17px -1px #3D2B37;
+  background-color: #fefefe;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 0.5em;
+  pointer-events: none;
+  background-color: #a572db;
+  color: #fff;
+  font-family: monospace;
+  font-weight: 400;
+  /* border: 0.1px solid #888; */
+  border-radius: 3px;
+  box-shadow: 0px 0px 3px -1px #3D2B37;
+  min-width: 200px;
+}
+
+.dot {
+  stroke: #666;
+  stroke-width: 0.5;
+}
+
+.dot:hover {
+  fill: #a871e3;
+}
+
+.yAxis-label {
+  font-size: 1.1em;
+  text-transform: uppercase;
+}
+
+#ghub {
+  display: flex;
+  flex-direction: row;
+  margin: 1em auto;
+}
+
+#ghub a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+#ghub a p {
+  font-weight: bold;
+  text-align: right;
+  color: #eee;
+  /* text-transform: uppercase; */
+  margin: 0 0.6em;
+  font-size: 0.6em;
+}
+
+#ghub img {
+  height: 1em;
+  /* filter: invert(1); */
+  transform: translateY(2px);
+}
